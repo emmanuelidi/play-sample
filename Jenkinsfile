@@ -10,6 +10,20 @@
 // }
 /*
 
+
+
+pipeline {
+    agent { docker 'maven:3.3.3' }
+    stages {
+        stage('build') {
+            steps {
+                sh 'docker info'
+            }
+        }
+    }
+}
+*/
+
 pipeline {
     agent any
     stages {
@@ -20,19 +34,6 @@ pipeline {
                     echo "Multiline shell steps works too"
                     ls -lah
                 '''
-            }
-        }
-    }
-}
-
-
-*/
-pipeline {
-    agent { docker 'maven:3.3.3' }
-    stages {
-        stage('build') {
-            steps {
-                sh 'docker info'
             }
         }
     }
