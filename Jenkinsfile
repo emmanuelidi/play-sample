@@ -22,18 +22,30 @@ pipeline {
         }
     }
 }
+https://hub.docker.com/_/openjdk/
 
-
+hseeberger/scala-sbt
+openjdk:8 java -version
 */
 
 pipeline {
     agent {
-        docker { image 'hseeberger/scala-sbt' }
+        docker { image 'openjdk:8' }
+    }
+    environment {
+        DISABLE_AUTH = 'true'
+        DB_ENGINE    = 'sqlite'
     }
     stages {
+        stage('Dump') {
+            steps {
+                sh 'printenv'
+            }
+        }
         stage('Test') {
             steps {
-                sh 'sbt version'
+                //sh 'sbt version'
+                sh 'java -version'
             }
         }
         stage('Build') {
