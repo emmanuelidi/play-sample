@@ -22,11 +22,20 @@ pipeline {
         }
     }
 }
+
+
 */
 
 pipeline {
-    agent any
+    agent {
+        docker { image 'hseeberger/scala-sbt' }
+    }
     stages {
+        stage('Test') {
+            steps {
+                sh 'sbt version'
+            }
+        }
         stage('Build') {
             steps {
                 sh 'echo "Hello World"'
