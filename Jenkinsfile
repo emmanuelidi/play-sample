@@ -30,7 +30,9 @@ openjdk:8 java -version
 
 pipeline {
     agent {
-        docker { image 'openjdk:8' }
+        //docker { image 'openjdk:8' }
+        docker { image 'hseeberger/scala-sbt:8u151-2.12.4-1.1.1' }
+        
     }
     environment {
         DISABLE_AUTH = 'true'
