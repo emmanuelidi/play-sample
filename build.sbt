@@ -37,8 +37,8 @@ buildInfoOptions += BuildInfoOption.ToJson
 // TEST CONFIGURATION
 //
 
-Test / testOptions += Tests.Setup( () => println("Setup") )
-Test / testOptions += Tests.Cleanup( () => println("Cleanup") )
+//Test / testOptions += Tests.Setup( () => println("Setup") )
+//Test / testOptions += Tests.Cleanup( () => println("Cleanup") )
 
 /*
 
