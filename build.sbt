@@ -31,4 +31,36 @@ lazy val root = (project in file("."))
   )
 
 buildInfoOptions += BuildInfoOption.ToJson
-*/  
+*/
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// TEST CONFIGURATION
+//
+
+Test / testOptions += Tests.Setup( () => println("Setup") )
+Test / testOptions += Tests.Cleanup( () => println("Cleanup") )
+
+/*
+
+javaOptions in Test ++= Seq(
+  "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9998",
+  "-Xms512M",
+  "-Xmx1536M",
+  "-Xss1M",
+  "-XX:MaxPermSize=384M"
+)
+
+Test / testOptions += Tests.Argument("-verbosity", "1")
+To specify them for a specific test framework only:
+
+Test / testOptions += Tests.Argument(TestFrameworks.ScalaCheck, "-verbosity", "1")
+
+
+ */
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// INTEGRATION TEST CONFIGURATION
+//
+/*
+https://www.scala-sbt.org/release/docs/Testing.html#Integration+Tests
+ */
