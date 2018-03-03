@@ -42,7 +42,7 @@ pipeline {
                 sh 'printenv'
             }
         }
-        stage('Test') {
+        stage('Java') {
             steps {
                 //sh 'sbt version'
                 sh 'java -version'
@@ -57,11 +57,22 @@ pipeline {
                 '''
             }
         }
+        stage('Test') {
+            steps {
+                sh 'sbt test'
+            }
+        }
     }
     post {
         always {
             echo 'This will always run'
         }
+
+        always {
+            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+            echo 'Collect Unit Test output'
+            junit 'target/test-reports/**/*.xml'
+        }        
         success {
             echo 'This will run only if successful'
         }
