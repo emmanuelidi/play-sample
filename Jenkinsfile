@@ -66,10 +66,7 @@ pipeline {
     post {
         always {
             echo 'This will always run'
-        }
-
-        always {
-            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+            //archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
             echo 'Collect Unit Test output'
             junit 'target/test-reports/**/*.xml'
         }        
