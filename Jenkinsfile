@@ -37,6 +37,7 @@ pipeline {
     environment {
         DISABLE_AUTH = 'true'
         DB_ENGINE    = 'sqlite'
+        JAVA_TOOL_OPTIONS = '-Dsbt.log.noformat=true'
     }
     stages {
         stage('Dump') {
