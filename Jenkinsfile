@@ -37,7 +37,11 @@ pipeline {
     environment {
         DISABLE_AUTH = 'true'
         DB_ENGINE    = 'sqlite'
-        JAVA_TOOL_OPTIONS = '-Dsbt.log.noformat=true'
+        // https://stackoverflow.com/questions/47327495/jenkins-2-0-running-sbt-in-a-docker-container?noredirect=1&lq=1
+        JAVA_TOOL_OPTIONS = '-Dsbt.log.noformat=true -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2'
+        /*
+sbt  clean test
+        */
     }
     stages {
         stage('Dump') {
