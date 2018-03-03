@@ -46,7 +46,8 @@ sbt  clean test
     stages {
         stage('Dump') {
             steps {
-                sh 'printenv'
+                //sh 'printenv'
+                sh 'printenv | sort'
             }
         }
         stage('Java') {
@@ -57,7 +58,7 @@ sbt  clean test
         }
         stage('Build') {
             steps {
-                sh 'echo "Hello World"'
+                echo 'Building'
                 sh '''
                     echo "Multiline shell steps works too"
                     ls -lah
@@ -66,22 +67,43 @@ sbt  clean test
         }
         stage('Test') {
             steps {
+                echo 'Testing'
                 sh 'sbt test'
             }
         }
+       stage('Deploy') {
+            steps {
+                echo 'Deploying'
+                echo 'Run Smoketest'
+            }
+        }
+ 
+        /*
+
+
+        */
     }
     post {
         always {
             echo 'This will always run'
             //archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
             echo 'Collect Unit Test output'
-            junit 'target/test-reports/**/*.xml'
+            junit '**/target/test-reports/*.xml'
+            deleteDir()
         }        
         success {
             echo 'This will run only if successful'
+            /*
+            slackSend channel: '#ops-room',
+                        color: 'good',
+                        message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."            
+            */
         }
         failure {
             echo 'This will run only if failed'
+            mail to: 'emmanuel.idi@gmail.com',
+                subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+                body: "Something is wrong with ${env.BUILD_URL}"            
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
