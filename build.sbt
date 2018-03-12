@@ -4,17 +4,30 @@ organization := "org.emmanuelidi"
 
 version := "1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayJava)
+lazy val root = (project in file("."))
+  .enablePlugins(PlayJava)
+  .settings(
+    //javacOptions ++= Seq("-Xlint:all", "-Xdoclint:all")
+  )
 	.enablePlugins(BuildInfoPlugin)
 	.settings(
 		// https://github.com/sbt/sbt-buildinfo
 		buildInfoPackage := "org.emmanuelidi.play.sample",
-		buildInfoOptions += BuildInfoOption.BuildTime,
-		buildInfoOptions += BuildInfoOption.ToJson
+		buildInfoOptions ++= Seq(BuildInfoOption.BuildTime, BuildInfoOption.ToJson)
+    // TODO: host, user, gitsha, computed-version, git-branch, jenkins-job, jenkins-job-build
+    //buildInfoKeys := BuildInfoKey.ofN(name, version, someTask),
 	)
 	// https://github.com/sbt/sbt-native-packager
-	.enablePlugins(DockerPlugin)
+	//.enablePlugins(DockerPlugin)
 
+/*
+lazy val root = (project in file("."))
+  .enablePlugins(BuildInfoPlugin)
+  .settings(
+    
+    buildInfoPackage := "hello"
+  )
+*/
 
 // https://github.com/sbt/sbt-git
 
@@ -23,6 +36,17 @@ scalaVersion := "2.12.4"
 
 libraryDependencies += guice
 
+//javacOptions ++= Seq("-Xlint:all", "-Xdoclint:all")
+/*
+-Xdoclint:all[/access]
+
+[info] * -encoding
+[info] * utf8
+[info] * -g
+
+// disable using the Scala version in output paths and artifacts
+    crossPaths := false,
+*/
 
 // Unit Testing
 libraryDependencies ++= Seq(
@@ -37,8 +61,21 @@ libraryDependencies ++= Seq(
 	// http://stefanbirkner.github.io/system-rules/
 	"com.github.stefanbirkner" % "system-rules" % "1.17.1" % Test
 )
+
+
+dependencyOverrides ++= Seq(
+  "com.google.guava" % "guava" % "22.0",
+  "com.typesafe.akka" %% "akka-stream" % "2.5.8",
+  "com.typesafe.akka" %% "akka-actor" % "2.5.8"
+)
+
 /*
 
+[warn]  *  is selected over 2.4.20
+[warn]      +- com.typesafe.akka:akka-slf4j_2.12:2.5.8 ()         (depends on 2.5.8)
+[warn]      +- com.typesafe.akka:akka-stream_2.12:2.5.8 ()        (depends on 2.5.8)
+[warn]      +- com.typesafe.play:play_2.12:2.6.11                 (depends on 2.5.8)
+[warn]      +- com.typesafe.akka:akka-parsing_2.12:10.0.11 ()     (depends on 2.4.20)
         // https://hc.apache.org/index.html
         "org.apache.httpcomponents" % "httpclient" % "4.5.5" % Test
         // https://jersey.github.io/documentation/latest/client.html
@@ -151,27 +188,27 @@ sonarProperties := Map(
 
 // ~~ Informational settings
 
-//packageName in Docker
-version in Docker := version.value
-maintainer in Docker := "API Platform Team"
+// //packageName in Docker
+// version in Docker := version.value
+// maintainer in Docker := "API Platform Team"
 
-// ~~ Environment Settings
+// // ~~ Environment Settings
 
-dockerBaseImage := "anapsix/alpine-java:8_jdk_unlimited"
-//daemonUser in Docker  The user to use when executing the application. Files below the install path also have their ownership set to this user.
-dockerExposedPorts := Seq(9000)
-//dockerExposedUdpPorts := Seq()
-dockerExposedVolumes := Seq("/logs")
-// https://docs.openshift.com/enterprise/3.0/creating_images/metadata.html#creating-images-metadata
-dockerLabels := Map( "api" -> "guests",
-										 "foo" -> "bar")
-// dockerEntrypoint	Overrides the default entrypoint for docker-specific service discovery tasks before running the application. Defaults to the bash executable script, available at bin/<script name> in the current WORKDIR of /opt/docker.
-//dockerVersion  The docker server version. Used to leverage new docker features while maintaining backwards compatibility.
+// dockerBaseImage := "anapsix/alpine-java:8_jdk_unlimited"
+// //daemonUser in Docker  The user to use when executing the application. Files below the install path also have their ownership set to this user.
+// dockerExposedPorts := Seq(9000)
+// //dockerExposedUdpPorts := Seq()
+// dockerExposedVolumes := Seq("/logs")
+// // https://docs.openshift.com/enterprise/3.0/creating_images/metadata.html#creating-images-metadata
+// dockerLabels := Map( "api" -> "guests",
+// 										 "foo" -> "bar")
+// // dockerEntrypoint	Overrides the default entrypoint for docker-specific service discovery tasks before running the application. Defaults to the bash executable script, available at bin/<script name> in the current WORKDIR of /opt/docker.
+// //dockerVersion  The docker server version. Used to leverage new docker features while maintaining backwards compatibility.
 
-// ~~ Publishing Settings
-//dockerRepository	The repository to which the image is pushed when the docker:publish task is run. This should be of the form [repository.host[:repository.port]] (assumes use of the index.docker.io repository) or [repository.host[:repository.port]][/username] (discouraged, but available for backwards compatibilty.).
-dockerUsername	:= Option("emmanuelidi")
-dockerUpdateLatest := false
+// // ~~ Publishing Settings
+// //dockerRepository	The repository to which the image is pushed when the docker:publish task is run. This should be of the form [repository.host[:repository.port]] (assumes use of the index.docker.io repository) or [repository.host[:repository.port]][/username] (discouraged, but available for backwards compatibilty.).
+// dockerUsername	:= Option("emmanuelidi")
+// dockerUpdateLatest := false
 
 
 /*
@@ -183,29 +220,29 @@ myTestTask := {
 }
 
  */
-lazy val validate = taskKey[Unit]("validate the project is correct and all necessary information is available")
-lazy val verify = taskKey[Unit]("run any checks to verify the package is valid and meets quality criteria")
+// lazy val validate = taskKey[Unit]("validate the project is correct and all necessary information is available")
+// lazy val verify = taskKey[Unit]("run any checks to verify the package is valid and meets quality criteria")
 
-verify := { 
-  (jcheckStyle in Compile).value
-  (jcheckStyle in Test).value
-  println("hello world!")
-}
+// verify := { 
+//   (jcheckStyle in Compile).value
+//   (jcheckStyle in Test).value
+//   println("hello world!")
+// }
 
 
-// Findbugs
-// See docs/examples at http://findbugs.sourceforge.net/manual/filter.html
+// // Findbugs
+// // See docs/examples at http://findbugs.sourceforge.net/manual/filter.html
 
-findbugsExcludeFilters := Some(
-  <FindBugsFilter>
-    <Match>
-      <Source name="~.*\.scala"/>
-    </Match>
-    <Match>
-      <Class name="~controllers\.routes.*"/>
-    </Match>
-  </FindBugsFilter>
-)
+// findbugsExcludeFilters := Some(
+//   <FindBugsFilter>
+//     <Match>
+//       <Source name="~.*\.scala"/>
+//     </Match>
+//     <Match>
+//       <Class name="~controllers\.routes.*"/>
+//     </Match>
+//   </FindBugsFilter>
+// )
 /*
 findbugsIncludeFilters := Some(<FindBugsFilter>
   <Match>
