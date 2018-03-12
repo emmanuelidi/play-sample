@@ -46,3 +46,5 @@ www/
 
 # SonarQube
 /.scannerwork
+
+.envrc
