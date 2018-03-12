@@ -24,3 +24,25 @@ project/plugins/project/
 /tmp
 /.idea
 /logs
+
+# ———————————————————————————————————————
+# Github Web Pages: https://git.marriott.com/pages/apiplat/guests-service/
+# 
+# To checkout existing `gh-pages` branch while working on main project:
+#
+#	git clone https://git.marriott.com/apiplat/guests-service.git ———————————————————————————————————————branch gh-pages ———————————————————————————————————————single-branch www
+#
+# To create initial `gh-pages` branch:
+#
+# 	mkdir ./www && cd www
+# 	git clone https://git.marriott.com/apiplat/guests-service.git .
+#	git checkout ———————————————————————————————————————orphan gh-pages
+#  	git rm -rf .
+#	echo Hello, World » index.html
+#	git add index.html
+#	git commit -a -m ‘Initial website’
+#	git push -u origin gh-pages
+www/
+
+# SonarQube
+/.scannerwork
